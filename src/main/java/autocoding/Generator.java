@@ -17,14 +17,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Generator {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static Logger logger = LoggerFactory.getLogger(Generator.class);
     private Properties properties = null;
 
     public static void main(String[] args) throws Exception {
         Generator generator = new Generator();
 //		generator.gen("preferential","优惠","preferential","wang");
         generator.gen("t_area", "区域表", "area", "wang");
-        System.out.println("模版文件生成完毕……");
+        logger.debug("模版文件生成完毕……");
     }
 
 
