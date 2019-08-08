@@ -104,8 +104,6 @@ public class Generator {
 
     /**
      * <p>Discription:[生成映射文件和实体类]</p>
-     * Created on 2015年2月4日
-     *
      * @param tableName 要声称映射文件和实体类的表名称
      * @throws Exception
      */

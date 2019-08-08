@@ -1,7 +1,7 @@
 package autocoding.common;
 
 public class Column {
-
+	//properties
 	private String name;
 	private String dbName;
 	private String label;
@@ -10,12 +10,10 @@ public class Column {
 	private Integer length;
 	private Boolean nullable;
 	private Integer decimalDigits;
-	
-	
+	//getter and setter
 	public String getName() {
 		return name;
 	}
-	
 	public String getNameUpper() {
 		return name.replaceFirst(name.substring(0, 1), name.substring(0, 1).toUpperCase());
 	}

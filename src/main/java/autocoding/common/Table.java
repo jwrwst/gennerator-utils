@@ -1,13 +1,12 @@
 package autocoding.common;
-
 import java.util.List;
-
 public class Table {
+	//properties
 	private String name;
 	private String dbName;
 	private List<Column> columns;
 	private List<Column> pkColumns;
-	
+	//getter and setter
 	public String getName() {
 		return name;
 	}

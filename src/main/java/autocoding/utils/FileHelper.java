@@ -25,7 +25,6 @@ public class FileHelper {
 	}
 	
 	/**
-	 * 
 	 * @param fileName 文件全路径名
 	 * @throws IOException 
 	 */
