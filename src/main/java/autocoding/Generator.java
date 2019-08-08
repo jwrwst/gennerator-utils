@@ -39,67 +39,68 @@ public class Generator {
         String userName = properties.getProperty("jdbc.username");
         String userPwd = properties.getProperty("jdbc.password");
         String dbURL = properties.getProperty("jdbc.url");
-
+        //
         String catalog = properties.getProperty("jdbc.catalog");
         String schema = properties.getProperty("jdbc.schema");
         schema = schema == null ? "%" : schema;
         String column = "%";
-
+        //log
         logger.debug("driver>>" + driverName);
         logger.debug("url>>" + dbURL);
         logger.debug("name>>" + userName);
         logger.debug("password>>" + userPwd);
         logger.debug("catalog>>" + catalog);
         logger.debug("schema>>" + schema);
-
+        //connection
         Class.forName(driverName);
         Connection conn = java.sql.DriverManager.getConnection(dbURL, userName, userPwd);
         DatabaseMetaData dmd = conn.getMetaData();
-
+        //resultSet
         ResultSet rs = dmd.getColumns(catalog, schema, tableName, column);
         List<Column> columns = new ArrayList<>();
         while (rs.next()) {
-            Column newColumn = new Column();
-            newColumn.setLabel(rs.getString("REMARKS"));
             String name = rs.getString("COLUMN_NAME");
-            newColumn.setName(CamelCaseUtils.toCamelCase(name));
-            newColumn.setDbName(name);
-
+            String lable = rs.getString("REMARKS");
             String dbType = rs.getString("TYPE_NAME");
             String type = properties.getProperty(dbType);
+            //创建column对象
+            Column newColumn = new Column();
+            newColumn.setLabel(lable);
+            newColumn.setName(CamelCaseUtils.toCamelCase(name));
+            newColumn.setDbName(name);
             newColumn.setDbType(dbType);
             newColumn.setType(type == null ? "String" : type);
-
             newColumn.setLength(rs.getInt("COLUMN_SIZE"));
             newColumn.setDecimalDigits(rs.getInt("DECIMAL_DIGITS"));
             newColumn.setNullable(rs.getBoolean("NULLABLE"));
+            //加入list
             columns.add(newColumn);
         }
 
         List<Column> pkColumns = new ArrayList<>();
         ResultSet pkrs = dmd.getPrimaryKeys(catalog, schema, tableName);
         while (pkrs.next()) {
-            Column c = new Column();
             String name = pkrs.getString("COLUMN_NAME");
-            c.setName(CamelCaseUtils.toCamelCase(name));
-            c.setDbName(name);
-            pkColumns.add(c);
+            Column col = new Column();
+            col.setName(CamelCaseUtils.toCamelCase(name));
+            col.setDbName(name);
+            pkColumns.add(col);
         }
-
+        //关闭连接
         conn.close();
-
-        Table t = new Table();
-
+        //判断是否需要移除表前缀
         String prefiex = properties.getProperty("tableRemovePrefixes");
         String name = tableName;
         if (prefiex != null && !"".equals(prefiex)) {
             name = tableName.split(prefiex)[1];
         }
-        t.setName(CamelCaseUtils.toCamelCase(name));
-        t.setDbName(tableName);
-        t.setColumns(columns);
-        t.setPkColumns(pkColumns);
-        return t;
+        //创建table对象
+        Table table = new Table();
+        table.setName(CamelCaseUtils.toCamelCase(name));
+        table.setDbName(tableName);
+        table.setColumns(columns);
+        table.setPkColumns(pkColumns);
+        return table;
     }
 
     /**
@@ -108,7 +109,7 @@ public class Generator {
      * @throws Exception
      */
     public void gen(String tableName, String info, String model_package_name, String uname) throws Exception {
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_21);
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_27);
 
         String outRoot = properties.getProperty("outRoot");
         String basepackage = properties.getProperty("basepackage");
