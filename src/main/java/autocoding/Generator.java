@@ -57,7 +57,7 @@ public class Generator {
         DatabaseMetaData dmd = conn.getMetaData();
 
         ResultSet rs = dmd.getColumns(catalog, schema, tableName, column);
-        List<Column> columns = new ArrayList<Column>();
+        List<Column> columns = new ArrayList<>();
         while (rs.next()) {
             Column newColumn = new Column();
             newColumn.setLabel(rs.getString("REMARKS"));
@@ -76,7 +76,7 @@ public class Generator {
             columns.add(newColumn);
         }
 
-        List<Column> pkColumns = new ArrayList<Column>();
+        List<Column> pkColumns = new ArrayList<>();
         ResultSet pkrs = dmd.getPrimaryKeys(catalog, schema, tableName);
         while (pkrs.next()) {
             Column c = new Column();
@@ -118,7 +118,7 @@ public class Generator {
         SimpleDateFormat sm_date = new SimpleDateFormat("yyyy年MM月dd日");
         SimpleDateFormat sm_year = new SimpleDateFormat("yyyy年");
 
-        Map<String, Object> root = new HashMap<String, Object>();
+        Map<String, Object> root = new HashMap<>();
         Random random = new Random();
         String suid = random.nextInt(1000000) + "" + System.currentTimeMillis() + "L";
         Table table = this.parseTable(tableName);
