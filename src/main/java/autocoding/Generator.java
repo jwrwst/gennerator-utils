@@ -15,6 +15,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.LongAdder;
 
 public class Generator {
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
@@ -23,7 +24,7 @@ public class Generator {
     public static void main(String[] args) throws Exception {
         Generator generator = new Generator();
 //		generator.gen("preferential","优惠","preferential","wang");
-        generator.gen("t_area", "区域表", "area", "wang");
+        generator.gen("keywordreport", "关键词表", "sougou", "wang");
         logger.debug("模版文件生成完毕……");
     }
 

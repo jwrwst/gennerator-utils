@@ -25,16 +25,16 @@
     <entry key="jdbc.catalog"/>
 
      <!--包名目录-->
-     <entry key="basepackage">cn.system</entry>
+     <entry key="basepackage">cn</entry>
      <entry key="outRoot">/GeneratorCode</entry>
 
-     <entry key="jdbc.username">root</entry>
-     <entry key="jdbc.password">mile.root</entry>
+     <entry key="jdbc.username">yunduo_page</entry>
+     <entry key="jdbc.password">Dio02s1JgsyEBvsNrwleyahaguxtQ7</entry>
 
      <!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
-     <entry key="tableRemovePrefixes">t_</entry>
+     <entry key="tableRemovePrefixes"></entry>
      <!-- MySQL -->
-     <entry key="jdbc.url">jdbc:mysql://localhost:3306/db_user?useUnicode=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8</entry>
+     <entry key="jdbc.url">jdbc:mysql://39.106.191.233:63899/yunduo_page1?useUnicode=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8</entry>
      <entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 
 </properties>
