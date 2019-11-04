@@ -108,7 +108,7 @@
 3 ） 展示对象： xxxVO ， xxx 一般为网页名称。
 4 ） POJO 是 DO / DTO / BO / VO 的统称，禁止命名成 xxxPOJO 
 
-> 【强制】一个实体可对应一个枚举类，该枚举类中可能有多字段需要枚举。例如：见最下方。
+> 【强制】一个实体可对应一个枚举类，该枚举类中可能有多字段需要枚举。例如：见下方。
 例如：
 public interface Constants {
     enum Catalog{
@@ -154,3 +154,7 @@ public interface Constants {
         }
     }
 }
+
+#拓展
+> 分支管理的概念性和流程，建议采用gitflow的工作流程进行分支管理
+> 对项目模块化插件化的设计概念
