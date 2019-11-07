@@ -13,6 +13,11 @@
 > 【推荐】如果模块、接口、类、方法使用了设计模式，在命名时需体现出具体模式。例如： public class OrderFactory; public class LoginProxy; public class ResourceObserver;
 > 【待定】对外暴露的接口名不使用驼峰命名，采用restful风格，能见名知义
 > 【强制】controller方法命名，跳转到某页面采用to+对应的操作【例如：toQueryCtiyPage/toAddCityPage/toModifyCityPage/toRemoveCityPage】
+> 【强制】领域模型命名规约
+   1） 数据对象： xxxDO ， xxx 即为数据表名。
+   2） 数据传输对象： xxxDTO ， xxx 为业务领域相关的名称。
+   3） 展示对象： xxxVO ， xxx 一般为网页名称。
+   4） POJO 是 DO / DTO / BO / VO 的统称，禁止命名成 xxxPOJO 
 
 #验证
 > 【推荐】controller层不要写业务逻辑，只做接参和调用；
@@ -113,17 +118,12 @@
 #拓展-项目插件化
 > 对项目模块化插件化的设计概念
 
-#领域模型命名规约
-1 ） 数据对象： xxxDO ， xxx 即为数据表名。
-2 ） 数据传输对象： xxxDTO ， xxx 为业务领域相关的名称。
-3 ） 展示对象： xxxVO ， xxx 一般为网页名称。
-4 ） POJO 是 DO / DTO / BO / VO 的统称，禁止命名成 xxxPOJO 
-
-> 【强制】一个实体可对应一个枚举类，该枚举类中可能有多字段需要枚举。例如：见下方。
-例如：
-public interface ConstantsEnum {
-    enum Catalog{
-        ALL(0, "test");
+# 枚举类思考：
+> 【推荐】一个实体可对应一个interface类，该枚举类中可能有多字段需要枚举，具体使用如下：
+public interface UserEnum {
+    enum Level{
+        L1(0, "普通会员"),
+        L2(1, "vip会员");
         Catalog(Integer code, String message) {
             this.code = code;
             this.message = message;
@@ -133,18 +133,13 @@ public interface ConstantsEnum {
         public Integer getCode() {
             return code;
         }
-        public void setCode(Integer code) {
-            this.code = code;
-        }
         public String getMessage() {
             return message;
         }
-        public void setMessage(String message) {
-            this.message = message;
-        }
     }
     enum Status{
-        YES(0, "test2");
+        NO(0, "正常"),
+        YES(1, "禁用");
         Status(Integer code, String message) {
             this.code = code;
             this.message = message;
@@ -154,14 +149,8 @@ public interface ConstantsEnum {
         public Integer getCode() {
             return code;
         }
-        public void setCode(Integer code) {
-            this.code = code;
-        }
         public String getMessage() {
             return message;
-        }
-        public void setMessage(String message) {
-            this.message = message;
         }
     }
 }
