@@ -11,8 +11,7 @@
 > 【推荐】为了达到代码自解释的目标，任何自定义编程元素在命名时，使用尽量完整的单词组合来表达其意。
 > 【推荐】变量名尽量避免用与类名相同
 > 【推荐】如果模块、接口、类、方法使用了设计模式，在命名时需体现出具体模式。例如： public class OrderFactory; public class LoginProxy; public class ResourceObserver;
-> 【待定】对外暴露的接口名不使用驼峰命名，采用restful风格，能见名知义
-> 【强制】controller方法命名，跳转到某页面采用to+对应的操作【例如：toQueryCtiyPage/toAddCityPage/toModifyCityPage/toRemoveCityPage】
+> 【强制】对外暴露的接口名不使用驼峰命名，采用restful风格，能见名知义; 跳转到某页面采用/to/对应的操作, 例如：/city/to/save, /city是controller上的@RequestMapping定义的
 > 【强制】领域模型命名规约
    1） 数据对象： xxxDO ， xxx 即为数据表名。
    2） 数据传输对象： xxxDTO ， xxx 为业务领域相关的名称。
