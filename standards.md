@@ -27,6 +27,7 @@
 > 【推荐】controler类命名使用 xxControllerV1.1方式命名，即实体名称/业务名称+Controller+【版本号】。例如：CustomerControllerV1.0/TrackControllerV1.0
 
 #代码规范
+> 【强制】DAO不允许调用Service; Service中不允许调用Service; 如果公用请抽离出来。
 > 【强制】所有的覆写方法，必须加@Override 注解
 > 【强制】所有的相同类型的包装类对象之间值的比较，全部使用 equals 方法比较。
 > 【强制】常用方法不要自己实现，使用公共类完成
