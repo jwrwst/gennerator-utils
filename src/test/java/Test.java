@@ -21,7 +21,7 @@ public class Test {
      *      或
      *  月利息 = 剩余本金 * 月利率
      */
-    public static void payInfo(double totalBorrowMoney, int totalMonths, double yearRate, double monthRate){
+    public static void payInfo1(double totalBorrowMoney, int totalMonths, double yearRate, double monthRate){
         // 输出入参
         logger.info("年利率:{}, 月利率:{}, 贷款本金:{}, 还款总月数:{} ", yearRate, monthRate, totalBorrowMoney, totalMonths);
 
@@ -39,9 +39,11 @@ public class Test {
             double monthIncome = monthPay - monthCapital;
             logger.info("第" + monthIndex + "月, 本金:{}, 月利息:{}", monthCapital, monthIncome);
         }
-        logger.info("---------------------------------------------------");
+    }
 
-
+    public static void payInfo2(double totalBorrowMoney, int totalMonths, double yearRate, double monthRate){
+        // 输出入参
+        logger.info("年利率:{}, 月利率:{}, 贷款本金:{}, 还款总月数:{} ", yearRate, monthRate, totalBorrowMoney, totalMonths);
         // 每月利息  = 剩余本金 x 月利率
         double monthInterest;
         // 月支付本金
@@ -68,7 +70,6 @@ public class Test {
     }
 
 
-
     public static void main(String[] args) {
         //年利率
         double yearRate = 0.0588;
@@ -78,7 +79,8 @@ public class Test {
         int totalMonths = 360;
         //贷款本金
         double loansMoney = 110_0000;
-        payInfo(loansMoney, totalMonths, yearRate, monthRate);
+//        payInfo1(loansMoney, totalMonths, yearRate, monthRate);
+        payInfo2(loansMoney, totalMonths, yearRate, monthRate);
     }
 
 
