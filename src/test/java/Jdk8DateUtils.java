@@ -3,6 +3,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
@@ -37,6 +38,11 @@ public class Jdk8DateUtils implements Serializable {
         return localDate.getDayOfMonth();
     }
 
+    public static int getCurrentDay(LocalDate localDate) {
+        // 根据repaymentDate计算出是哪个月份、总天数、过去天数、剩余天数
+        return localDate.getDayOfMonth();
+    }
+
     /**
      * 获取指定日期的月总天数
      * @param date
@@ -49,6 +55,12 @@ public class Jdk8DateUtils implements Serializable {
         return monthLastDay.getDayOfMonth();
     }
 
+
+    public static int getMonthDays(LocalDate localDate) {
+        // 根据repaymentDate计算出是哪个月份、总天数、过去天数、剩余天数
+        LocalDate monthLastDay = localDate.with(TemporalAdjusters.lastDayOfMonth());
+        return monthLastDay.getDayOfMonth();
+    }
     /**
      * date 转 LocalDate
      * @param date
@@ -68,6 +80,38 @@ public class Jdk8DateUtils implements Serializable {
         return date;
     }
 
+    /**
+     * 日期转LocalDate
+     * @param date
+     * @return
+     */
+    public static LocalDate parseLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter);
+    }
 
+    /**
+     * 判断两个日期是否同年同月
+     * @param localDate1
+     * @param localDate2
+     * @return
+     */
+    public static boolean isSameYearAndMonth(LocalDate localDate1, LocalDate localDate2){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        String date1 = formatter.format(localDate1);
+        String date2 = formatter.format(localDate2.plusMonths(1));
+        if (date1.equals(date2)){
+            return true;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        // 首次还款日期【年月】
+        LocalDate firstPayDate = Jdk8DateUtils.parseLocalDate("2018-11-21");
+        LocalDate localDate = LocalDate.now();
+        boolean sameYearAndMonth2 = isSameYearAndMonth(firstPayDate, localDate);
+        System.out.println(sameYearAndMonth2);
+    }
 
 }
