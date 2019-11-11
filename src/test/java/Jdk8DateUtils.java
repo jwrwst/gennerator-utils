@@ -99,7 +99,8 @@ public class Jdk8DateUtils implements Serializable {
     public static boolean isSameYearAndMonth(LocalDate localDate1, LocalDate localDate2){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         String date1 = formatter.format(localDate1);
-        String date2 = formatter.format(localDate2.plusMonths(1));
+//        String date2 = formatter.format(localDate2.plusMonths(1));
+        String date2 = formatter.format(localDate2);
         if (date1.equals(date2)){
             return true;
         }
@@ -108,8 +109,11 @@ public class Jdk8DateUtils implements Serializable {
 
     public static void main(String[] args) {
         // 首次还款日期【年月】
-        LocalDate firstPayDate = Jdk8DateUtils.parseLocalDate("2018-11-21");
+        LocalDate firstPayDate = Jdk8DateUtils.parseLocalDate("2019-10-11");
         LocalDate localDate = LocalDate.now();
+
+        boolean flag = firstPayDate.compareTo(localDate) >0;
+        System.out.println(flag);
         boolean sameYearAndMonth2 = isSameYearAndMonth(firstPayDate, localDate);
         System.out.println(sameYearAndMonth2);
     }
