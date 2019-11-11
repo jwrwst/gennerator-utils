@@ -46,10 +46,10 @@ public class BankLoans {
             put(Jdk8DateUtils.parseLocalDate("2020-01-15"), 20_0000d);
         }};
         // 计算
-        payInfo4(repaymentMap, allTermDateMap);
+        payInfo(repaymentMap, allTermDateMap);
     }
 
-    public static void payInfo4(Map<LocalDate, Double> repaymentMap, Map<LocalDate, Integer> allTermDateMap){
+    public static void payInfo(Map<LocalDate, Double> repaymentMap, Map<LocalDate, Integer> allTermDateMap){
         // 输出入参
         logger.info("年利率:{}, 月利率:{}, 贷款本金:{}, 还款总月数:{} ", yearRate, monthRate, loansMoney, totalMonths);
         // 每月利息  = 剩余本金 x 月利率
@@ -65,6 +65,18 @@ public class BankLoans {
             // 获取还款日期和对应的期数
             LocalDate payDate = entryInfo.getKey();
             Integer payTerm = entryInfo.getValue();
+            // 暂无提前还款的记录
+            if (repaymentMap == null || repaymentMap.size() <=0){
+                // 正常还款，未提前还款
+                // 每月利息  = 剩余本金 * 月利率
+                monthInterest = remainBorrowMoney * monthRate;
+                // 月支付本金 = 本金×月利率×(1+月利率)^(还款月序号-1)÷((1+月利率)^还款月数-1))
+                monthPayCapital = (loansMoney * monthRate * (Math.pow((1 + monthRate), payTerm - 1))) / (Math.pow(1 + monthRate, totalMonths) - 1);
+                //输出每个月的 “本金”、“利息”、“本息”
+                logger.info("第{}月本金:{} ,利息:{}, 月供:{}", payTerm, monthPayCapital, monthInterest, (monthPayCapital + monthInterest));
+                continue;
+            }
+            // 有提前还款记录
             for (Map.Entry<LocalDate, Double> entry : repaymentMap.entrySet()) {
                 // 根据repaymentDate计算出是哪个月份、总天数、过去天数、剩余天数
                 LocalDate repaymentDate = entry.getKey();
@@ -84,7 +96,7 @@ public class BankLoans {
                     logger.info("第{}月, 日期:{}, 月供:{}, 本金:{}, 利息:{}", payTerm, payDate, monthPayMoney, monthPayCapital, monthInterest);
                     continue;
                 }
-                logger.info("==========================提前还款====================================");
+                logger.info("==========================提前还款start====================================");
                 // 总还款月份减少
                 totalMonths = totalMonths - (payTerm-1);
                 //本月总天数
@@ -107,10 +119,12 @@ public class BankLoans {
                 // TODO 946.38 该计算公式算出来的钱少二十多块钱
                 // 月支付本金 = 本金×月利率×(1+月利率)^(还款月序号-1)÷((1+月利率)^还款月数-1))
                 monthPayCapital = (remainBorrowMoney * monthRate * (Math.pow((1 + monthRate), (payTerm - 1)))) / (Math.pow((1 + monthRate), totalMonths) - 1);
-
+                // 补差价 5977.63 为实际支付的月供；该money变量表示增加补差价
+                double money = (5977.63 - monthInterest - monthPayCapital);
                 //输出每个月的 “本金”、“利息”、“本息”
-                double monthPay = monthPayCapital + monthInterest;
+                double monthPay = monthPayCapital + monthInterest + money;
                 logger.info("第{}月, 日期:{}, 月供:{}, 本金:{}, 利息:{}", payTerm, payDate, monthPay, monthPayCapital, monthInterest);
+                logger.info("==========================提前还款end====================================");
             }
         }
     }
