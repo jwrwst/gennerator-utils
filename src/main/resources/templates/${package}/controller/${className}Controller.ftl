@@ -23,9 +23,7 @@ import com.camelot.openplatform.common.ExecuteResult;
 /** 
  * Description: [描述该类概要功能介绍]
  * Created on ${date}
- * @author  <a href="mailto: XXXXXX@camelotchina.com">中文名字</a>
- * @version 1.0 
- * Copyright (c) ${year} 北京柯莱特科技有限公司 交付部 
+ * @author ${uname}
  */
 @Controller
 @RequestMapping("/sellcenter/${classNameLower}")

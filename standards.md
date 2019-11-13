@@ -104,6 +104,7 @@
 > 30.【强制】单行注释的双斜线与注释内容之间有且仅有一个空格。
 > 31.【强制】单行注释需要放在该行的上方，不要放在该行的后面。
 > 32.【强制】类、类属性、类方法的注释必须使用javadoc规范，使用文档注释格式，不得使用//XX方式，文档注释时必须包含三个部分：描述、作者、时间。
+> 33.【强制】非空判断，统一使用封装好的项目中StringUtils工具类，工具类中继承org.apache.commons.lang3.StringUtils。
 
 #三、并发处理
 > 1.【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。
@@ -118,7 +119,7 @@
     2） CachedThreadPool 和 ScheduledThreadPool :
         允许的创建线程数量为 Integer.MAX_VALUE ，可能会创建大量的线程，从而导致 OOM 。
         
-> 4.【强制】 SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static ，必须加锁，或者使用 DateUtils 工具类。
+> 4.【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static ，必须加锁，或者使用 DateUtils 工具类。
   正例：注意线程安全，使用 DateUtils 。亦推荐如下处理：
   private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
       @Override
@@ -129,12 +130,12 @@
   说明：如果是 JDK 8 的应用，可以使用 Instant 代替 Date ， LocalDateTime 代替 Calendar ，
   DateTimeFormatter 代替 SimpleDateFormat ，官方给出的解释： simple beautiful strong immutable thread - safe 。
   
-> 5.【参考】 volatile 解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，
+> 5.【参考】volatile 解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，
   但是如果多写，同样无法解决线程安全问题。如果是 count ++操作，使用如下类实现：
   AtomicInteger count =  new AtomicInteger(); count . addAndGet( 1 );  如果是 JDK 8，推
   荐使用 LongAdder 对象，比 AtomicLong 性能更好 （ 减少乐观锁的重试次数 ） 。
   
-> 6.【参考】  HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在
+> 6.【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在
   开发过程中可以使用其它数据结构或加锁来规避此风险。
   
 #四、异常日志

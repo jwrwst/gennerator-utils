@@ -62,4 +62,13 @@ public class Column {
 	public void setDbType(String dbType) {
 		this.dbType = dbType;
 	}
+
+	public static void main(String[] args) {
+		String name = "is_deleted";
+		boolean bool = name.startsWith("is_");
+		if (bool){
+			String mes = name.replaceAll("is_", "");
+			System.out.println(mes);
+		}
+	}
 }

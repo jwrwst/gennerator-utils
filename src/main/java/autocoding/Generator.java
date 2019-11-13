@@ -15,16 +15,17 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.LongAdder;
 
 public class Generator {
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
     private Properties properties = null;
+    // 用于判断属性字段是否以is_开头
+    String prifix = "is_";
 
     public static void main(String[] args) throws Exception {
         Generator generator = new Generator();
 //		generator.gen("preferential","优惠","preferential","wang");
-        generator.gen("keywordreport", "关键词表", "sougou", "wang");
+        generator.gen("test", "", "", "wang");
         logger.debug("模版文件生成完毕……");
     }
 
@@ -67,10 +68,18 @@ public class Generator {
             //创建column对象
             Column newColumn = new Column();
             newColumn.setLabel(lable);
-            newColumn.setName(CamelCaseUtils.toCamelCase(name));
+            boolean isContainsPrefix = name.startsWith(prifix);
+            if (isContainsPrefix){
+                // 如果是is前缀开头，则去除is, 并且属性字段的类型为boolean
+                String propertiesName = getDeletedIsPrifix(name);
+                newColumn.setName(CamelCaseUtils.toCamelCase(propertiesName));
+                newColumn.setType("boolean");
+            }else{
+                newColumn.setName(CamelCaseUtils.toCamelCase(name));
+                newColumn.setType(type == null ? "String" : type);
+            }
             newColumn.setDbName(name);
             newColumn.setDbType(dbType);
-            newColumn.setType(type == null ? "String" : type);
             newColumn.setLength(rs.getInt("COLUMN_SIZE"));
             newColumn.setDecimalDigits(rs.getInt("DECIMAL_DIGITS"));
             newColumn.setNullable(rs.getBoolean("NULLABLE"));
@@ -102,6 +111,15 @@ public class Generator {
         table.setColumns(columns);
         table.setPkColumns(pkColumns);
         return table;
+    }
+
+    /**
+     * 如果包含"is_"前缀则去除
+     * @param name
+     * @return
+     */
+    private String getDeletedIsPrifix(String name){
+        return name.split(prifix)[1];
     }
 
     /**

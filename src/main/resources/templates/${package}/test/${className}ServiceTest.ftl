@@ -8,13 +8,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import ${package}.service.${className}Service;
-
-/** 
+/**
  * Description: [XXXX的单元测试]
  * Created on ${date}
- * @author  <a href="mailto: XXXXXX@camelotchina.com">中文名字</a>
- * @version 1.0 
- * Copyright (c) ${year} 北京柯莱特科技有限公司 交付部 
+ * @author  ${uname}
  */
 @Service
 public class ${className}ServiceTest{
