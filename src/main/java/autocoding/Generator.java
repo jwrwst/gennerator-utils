@@ -71,7 +71,7 @@ public class Generator {
             boolean isContainsPrefix = name.startsWith(prifix);
             if (isContainsPrefix){
                 // 如果是is前缀开头，则去除is, 并且属性字段的类型为boolean
-                String propertiesName = getDeletedIsPrifix(name);
+                String propertiesName = this.getRemovePrifix(name);
                 newColumn.setName(CamelCaseUtils.toCamelCase(propertiesName));
                 newColumn.setType("boolean");
             }else{
@@ -118,7 +118,7 @@ public class Generator {
      * @param name
      * @return
      */
-    private String getDeletedIsPrifix(String name){
+    private String getRemovePrifix(String name){
         return name.split(prifix)[1];
     }
 

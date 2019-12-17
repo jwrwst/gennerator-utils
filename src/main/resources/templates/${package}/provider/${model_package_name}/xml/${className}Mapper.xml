@@ -5,29 +5,9 @@
 	<!-- 返回值映射map -->
 	<resultMap id="${classNameLower}Mapper" type="${package}.api.entity.${model_package_name}.${className}">
 		<#list table.columns as column>
-			<result property="${column.name}" column="${column.dbName}" />
+		<result property="${column.name}" column="${column.dbName}" />
 		</#list>
 	</resultMap>
-
-	<!-- 查询字段公共sql -->
-	<sql id="selectAllColumns">
-		<![CDATA[
-		SELECT
-		<#list table.columns as column>
-			 ${column.dbName}<#if column_has_next>,</#if> 
-		</#list>
-			FROM ${table.dbName} record
-		]]>
-	</sql>
-
-	<sql id="where_fragement">
-		where 1=1
-		<#list table.columns as column>
-			<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
-				<![CDATA[ and record.${column.dbName}  = ${ r"#{" + column.name }} ]]>
-			</if>
-		</#list>
-	</sql>
 
 	<!-- 分页查询数据集合-->
 	<select id="findList" resultMap="${classNameLower}Mapper" >
@@ -42,7 +22,8 @@
 		limit 1
 	</select>
 
-	<select id="get" resultMap="${classNameLower}Mapper" >
+	<!--根据ID查询-->
+	<select id="getById" resultMap="${classNameLower}Mapper" >
 		<include refid="selectAllColumns"/>
 		where record.id = ${r"#{id}"}
 	</select>
@@ -50,32 +31,64 @@
 	<!-- 新增 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${package}.api.entity.${model_package_name}.${className}">
 		insert into ${table.dbName}(
-			<#list table.columns as column>
-				<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
-					${column.dbName}<#if column_has_next>,</#if>
-				</if>
-			</#list>
+		<include refid="table_columns"/>
 		)values(
-			<#list table.columns as column>
-				<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
-					${ r"#{" + column.name + r"}" }<#if column_has_next>,</#if>
-				</if>
-			</#list>
+		<include refid="entity_properties"/>
 		)
 	</insert>
 	<!-- 编辑 -->
-	<update id="update" parameterType="${package}.api.entity.${model_package_name}.${className}">
+	<update id="updateById" parameterType="${package}.api.entity.${model_package_name}.${className}">
 		update ${table.dbName} record 
-			<set>
-			<#list table.columns as column>
-				<#if column.name != 'id' && column.name != 'createdAt' && column.name != 'updatedAt' && column.name !='finishedAt'>
-					<if test = ${"\""}${ column.name + r" != null" }${"\""}>
-						record.${column.dbName} = ${ r"#{" + column.name + r"}" }<#if column_has_next>,</#if>
-					</if>
-				</#if>
-			</#list>
-			</set>
+		<set>
+		<#list table.columns as column>
+			<#if column.name != 'id' && column.name != 'createdAt'>
+			<if test = ${"\""}${ column.name + r" != null" }${"\""}>
+				record.${column.dbName} = ${ r"#{" + column.name + r"}" }<#if column_has_next>,</#if>
+			</if>
+			</#if>
+		</#list>
+		</set>
 		where id = ${r'#{id}'}
 	</update>
-	
+	<!-- TODO Some other query start -->
+
+	<!-- TODO Some other query end -->
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+		<![CDATA[
+		SELECT
+		<#list table.columns as column>
+			 ${column.dbName}<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.dbName} record
+		]]>
+	</sql>
+
+	<!-- where 查询条件 -->
+	<sql id="where_fragement">
+		where 1=1
+		<#list table.columns as column>
+		<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
+			<![CDATA[ and record.${column.dbName}  = ${ r"#{" + column.name }} ]]>
+		</if>
+		</#list>
+	</sql>
+
+	<!--表字段信息-->
+	<sql id="table_columns">
+		<#list table.columns as column>
+		<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
+			${column.dbName}<#if column_has_next>,</#if>
+		</if>
+		</#list>
+	</sql>
+
+	<!--实体属性-->
+	<sql id="entity_properties">
+		<#list table.columns as column>
+		<if test = ${"\""}${ r"" + column.name + r" != null" }${"\""}>
+			${ r"#{" + column.name }}<#if column_has_next>,</#if>
+		</if>
+		</#list>
+	</sql>
 </mapper>

@@ -35,16 +35,19 @@
     行数不超过 80 行。
     正例：代码逻辑分清红花和绿叶，个性和共性，绿叶逻辑单独出来成为额外方法，使主干代码
     更加清晰；共性逻辑抽取成为共性方法，便于复用和维护。
-> 5.【强制】dao层方法前缀，save/remove逻辑删/delete真删/update/get/find
-> 6.【推荐】避免set属性值的时候，set方法中直接调用其它方法，采用变量接受并set
+> 5.【强制】dao/service层方法前缀，save/delete物理删除/remove逻辑删除/update/find/findList
+> 6.【强制】controller层方法前缀，add/remove/edit/get
+
+
+> 7.【推荐】避免set属性值的时候，set方法中直接调用其它方法，采用变量接受并set
     说明：在set中调用其他方法，不容易发现和排查问题，不便于调试。
-> 7.【强制】POJO 类中布尔类型的变量，都不要加 is 前缀，否则部分框架解析会引起序列化错误【备注：POJO 是 DO / DTO / BO / VO 的统称，禁止命名成 xxxPOJO 】
-> 8.【强制】给实体entity属性设置值时，不要依赖数据库默认值，要明确写出来; 且实体中不允许写自定义属性。
+> 8.【强制】POJO 类中布尔类型的变量，都不要加 is 前缀，否则部分框架解析会引起序列化错误【备注：POJO 是 DO / DTO / BO / VO 的统称，禁止命名成 xxxPOJO 】
+> 9.【强制】给实体entity属性设置值时，不要依赖数据库默认值，要明确写出来; 且实体中不允许写自定义属性。
     说明：便于阅读理解和排查问题；避免对数据库默认值的依赖；
-> 9.【强制】controller-> @RequestMapping("/{version}/{xx/entity}/");controller-> method->的mapping需要指定请求方式：PostMapping/GetMapping/DeleteMapping/PutMapping
-> 10.【强制】方法设计要保证原子性，调用方法层级嵌套不要太深，尽量不超过3层；
+> 10.【强制】controller-> @RequestMapping("/{version}/{xx/entity}/");controller-> method->的mapping需要指定请求方式：PostMapping/GetMapping/DeleteMapping/PutMapping
+> 11.【强制】方法设计要保证原子性，调用方法层级嵌套不要太深，尽量不超过3层；
     说明：保证代码的整洁；便于维护
-> 11.【强制】表达异常的分支时，少用 if-else 方式 ，这种方式可以改写成：
+> 12.【强制】表达异常的分支时，少用 if-else 方式 ，这种方式可以改写成：
     if (condition) {
         ...
         return obj;
@@ -63,48 +66,50 @@
         System.out.println(“stay at home to learn Alibaba Java Coding Guidelines.”);
         return;
     }
-> 12.【推荐】接口类中的方法和属性不要加任何修饰符号 （public 也不要加 ） ，保持代码的简洁性，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量。
+> 13.【推荐】接口类中的方法和属性不要加任何修饰符号 （public 也不要加 ） ，保持代码的简洁性，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量。
     正例：接口方法签名 void commit();
          接口基础常量 String COMPANY = " alibaba " ;
     反例：接口方法定义 public abstract void f();
     说明： JDK 8 中接口允许有默认实现，那么这个 default 方法，是对所有实现类都有价值的默认实现。
-> 13.【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列失败; 如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值。
+> 14.【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列失败; 如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值。
     说明：注意 serialVersionUID 不一致会抛出序列化运行时异常。
-> 14.【强制】不允许catch后不做任何信息输出。
+> 15.【强制】不允许catch后不做任何信息输出。
     说明：避免捕获异常后无法发现，给排查问题带来不便。
-> 15.【强制】if后面必须添加大括号【｛】，保证代码的可读性和拓展。
-> 16.【强制】一个java源文件只存储一个java类，底层类库除外。
-> 17.【强制】避免用一个对象访问一个类的静态变量或方法，应该用类名去调用。
-> 18.【推荐】循环体内，字符串的连接方式，使用StringBuilder/StringBuffer的append 方法进行扩展。
-> 19.【推荐】测试方法要放在独立的包下，且类名以Test结尾；方法名以test开头
-> 20.【推荐】controller层不要写业务逻辑，只做接参和调用；
+> 16.【强制】if后面必须添加大括号【｛】，保证代码的可读性和拓展。
+> 17.【强制】一个java源文件只存储一个java类，底层类库除外。
+> 18.【强制】避免用一个对象访问一个类的静态变量或方法，应该用类名去调用。
+> 19.【推荐】循环体内，字符串的连接方式，使用StringBuilder/StringBuffer的append 方法进行扩展。
+> 20.【推荐】测试方法要放在独立的包下，且类名以Test结尾；方法名以test开头
+> 21.【推荐】controller层不要写业务逻辑，只做接参和调用；
     说明：
         1.保证controller代码整洁；
         2.这样做方便服务层方法的复用；
         3.业务和验证信息都在服务层做了，验证方法同样可以复用。
-> 21.【推荐】方法入参的合法性校验进行剥离独立出来 或 统一使用validate验证框架
+> 22.【推荐】方法入参的合法性校验进行剥离独立出来 或 统一使用validation验证框架
     说明：
         1.可以保证方法的原子性(一个方法只做一件事情)，方便复用，同时也便于维护。
         2.将验证逻辑与业务逻辑分离。
-> 22.【强制】java接口版本迭代时，老版本的接口方法或即将作废的方法需要标记即将作废——@Deprecated；并清晰地说明采用的新接口或者新服务是什么
+> 23.【强制】java接口版本迭代时，老版本的接口方法或即将作废的方法需要标记即将作废——@Deprecated；并清晰地说明采用的新接口或者新服务是什么
     说明：
         1.避免调用时，无法区分即将作废的方法，造成后期不必要的修改工作量。
         2.方便以后他人维护查找方便，节省维护成本。
-> 23.【推荐】controler类命名使用 xxControllerV1.1方式命名，即实体名称/业务名称+Controller+【版本号】。例如：CustomerControllerV1.0/TrackControllerV1.0
+> 24.【推荐】controler类命名使用 xxControllerV1.1方式命名，即实体名称/业务名称+Controller+【版本号】。例如：CustomerControllerV1.0/TrackControllerV1.0
     说明：
         1.采用实体名/业务名命名有利于对该controller的理解，每个人看到都能快速上手。
         2.版本号是对新老接口的区分和接口版本的管理
-> 24.【强制】业务层返回类型统一，返回指定规范类型。 例如：Result<T>
-> 25.【强制】待办事宜TODO，未完成的功能必须写TODO(内容包含：标记人，标记时间)，功能完成以后，删除TODO。
-> 26.【强制】一个实体可对应一个枚举类，该类中可能有多字段需要枚举，杜绝魔法值。例如：见最下方。
-> 27.【推荐】java代码中避免直接使用数字直接比较，要把字段枚举出来，用枚举值进行比较; 枚举类至少包含code值和desc描述。
-> 28.【推荐】关于公用字段需添加到数据字典进行统一使用，避免不同数字代表相同的含义，【比如：0，1分别代表男女，有些人命名为1，2代表男女】。
+> 25.【强制】业务层返回类型统一，返回指定规范类型。 例如：Result<T>
+> 26.【强制】待办事宜TODO，未完成的功能必须写TODO(内容包含：标记人，标记时间)，功能完成以后，删除TODO。
+> 27.【强制】一个实体可对应一个枚举类，该类中可能有多字段需要枚举，杜绝魔法值。例如：见最下方。
+> 28.【推荐】java代码中避免直接使用数字直接比较，要把字段枚举出来，用枚举值进行比较; 枚举类至少包含code值和desc描述。
+> 29.【推荐】关于公用字段需添加到数据字典进行统一使用，避免不同数字代表相同的含义，【比如：0，1分别代表男女，有些人命名为1，2代表男女】。
          添加到数据字典第一是为了保持系统内统一使用，二是为了避免前端过多判断，方便使用, 例如：性别、民族、年份、季节等等....
-> 29.【强制】代码的格式展示要有相应的缩进，以便提高代码的可读性; 可采用idea默认格式化进行处理。
-> 30.【强制】单行注释的双斜线与注释内容之间有且仅有一个空格。
-> 31.【强制】单行注释需要放在该行的上方，不要放在该行的后面。
-> 32.【强制】类、类属性、类方法的注释必须使用javadoc规范，使用文档注释格式，不得使用//XX方式，文档注释时必须包含三个部分：描述、作者、时间。
-> 33.【强制】非空判断，统一使用封装好的项目中StringUtils工具类，工具类中继承org.apache.commons.lang3.StringUtils。
+> 30.【强制】代码的格式展示要有相应的缩进，以便提高代码的可读性; 可采用idea默认格式化进行处理。
+> 31.【强制】单行注释的双斜线与注释内容之间有且仅有一个空格。
+> 32.【强制】单行注释需要放在该行的上方，不要放在该行的后面。
+> 33.【强制】类、类属性、类方法的注释必须使用javadoc规范，使用文档注释格式，不得使用//XX方式，文档注释时必须包含三个部分：描述、作者、时间。
+> 34.【强制】非空判断，统一使用封装好的项目中StringUtils工具类，工具类中继承org.apache.commons.lang3.StringUtils。
+> 35.【强制】公共方法必须放到工具类中；
+> 36.【强制】禁止使用废弃方法；不用的属性或者变量及时删除。
 
 #三、并发处理
 > 1.【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。
@@ -119,23 +124,12 @@
     2） CachedThreadPool 和 ScheduledThreadPool :
         允许的创建线程数量为 Integer.MAX_VALUE ，可能会创建大量的线程，从而导致 OOM 。
         
-> 4.【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static ，必须加锁，或者使用 DateUtils 工具类。
-  正例：注意线程安全，使用 DateUtils 。亦推荐如下处理：
-  private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
-      @Override
-      protected DateFormat initialValue() {
-        return new SimpleDateFormat("yyyy-MM-dd");
-      }
-  };
-  说明：如果是 JDK 8 的应用，可以使用 Instant 代替 Date ， LocalDateTime 代替 Calendar ，
-  DateTimeFormatter 代替 SimpleDateFormat ，官方给出的解释： simple beautiful strong immutable thread - safe 。
-  
-> 5.【参考】volatile 解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，
+> 4.【参考】volatile 解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，
   但是如果多写，同样无法解决线程安全问题。如果是 count ++操作，使用如下类实现：
   AtomicInteger count =  new AtomicInteger(); count . addAndGet( 1 );  如果是 JDK 8，推
   荐使用 LongAdder 对象，比 AtomicLong 性能更好 （ 减少乐观锁的重试次数 ） 。
   
-> 6.【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在
+> 5.【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在
   开发过程中可以使用其它数据结构或加锁来规避此风险。
   
 #四、异常日志
