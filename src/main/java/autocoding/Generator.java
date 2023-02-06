@@ -24,8 +24,9 @@ public class Generator {
 
     public static void main(String[] args) throws Exception {
         Generator generator = new Generator();
-//		generator.gen("preferential","优惠","preferential","wang");
-        generator.gen("test", "", "", "wang");
+		generator.gen("glm_cluster_setting", "集群配置表", "com", "wang");
+		generator.gen("glm_cluster_server", "运行端实例配置", "com", "wang");
+        generator.gen("glm_cluster_distribute", "分发逻辑信息", "com", "wang");
         logger.debug("模版文件生成完毕……");
     }
 

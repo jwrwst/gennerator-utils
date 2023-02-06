@@ -28,13 +28,14 @@
      <entry key="basepackage">cn</entry>
      <entry key="outRoot">/GeneratorCode</entry>
 
-     <entry key="jdbc.username">yunduo_page</entry>
-     <entry key="jdbc.password">Dio02s1JgsyEBvsNrwleyahaguxtQ7</entry>
+     <entry key="jdbc.username">root</entry>
+     <entry key="jdbc.password">123456</entry>
 
      <!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
-     <entry key="tableRemovePrefixes"></entry>
+     <entry key="tableRemovePrefixes">glm_</entry>
      <!-- MySQL -->
-     <entry key="jdbc.url">jdbc:mysql://39.106.191.233:63899/yunduo_page1?useUnicode=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8</entry>
-     <entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
+     <entry key="jdbc.url">jdbc:mysql://192.168.0.137:3306/230_zi_mxwi?useUnicode=true&amp;useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8</entry>
+     <entry key="jdbc.driver">com.mysql.cj.jdbc.Driver</entry>
+     <!--<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>-->
 
 </properties>
